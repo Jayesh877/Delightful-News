@@ -33,27 +33,39 @@ export class News extends Component {
   constructor()
   {
     super();
-    console.log("My cunstructor");
     this.state=
   {    
     articles:this.articles
   }
   };
+  async componentDidMount()
+  {
+      let url="https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=e2483041be8d415bab21708537c62960";
+      let data= await fetch(url);
+      
+      let parsedData=  await data.json()
+      console.log(parsedData);
+      this.setState({
+        articles:parsedData.articles
+      })
+  }
   
   render() {
     return (
+      <>
       <div className="container my-4" >
         <h2>This a news app</h2>
       <div className="row my-3">
       { this.state.articles.map((element)=>{
         return <div className="col-md-3" key={element.url}>
-            <NewsItem title={element.title.slice(0,25)} description={element.description.slice(0,85)} myurl={element.urlToImage} url={element.url}/>
+            <NewsItem title={element.title} description={element.description} myurl={element.urlToImage} url={element.url}/>
         </div>}
         ) 
-        }
+      }
        
       </div>
       </div>
+      </>
          )
   }
 }
