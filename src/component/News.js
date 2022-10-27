@@ -32,9 +32,9 @@ export class News extends Component {
   {
     this.props.setProgress(0);
     let url=`https://newsapi.org/v2/top-headlines?&country=${this.props.country}&category=${this.props.category}&apikey=${this.props.apikey}&page=${this.state.page}&pageSize=${this.props.pageSize}`;
-    this.setState({
-      loading:true
-    })
+    // this.setState({
+    //   loading:true
+    // })
     this.props.setProgress(30);
     let data= await fetch(url);
     
@@ -52,29 +52,12 @@ export class News extends Component {
   async componentDidMount()
   {
       this.update();
-  //     this.mount=true;
-  //     if(this.mount)
-  //     {
-  //     let url=`https://newsapi.org/v2/top-headlines?&country=${this.props.country}&category=${this.props.category}&apikey=${this.props.apikey}&page=${this.state.page}&pageSize=${this.props.pageSize}`;
-  //   this.setState({
-  //     loading:true
-  //   })
-  //   let data= await fetch(url);
-  //   let parsedData=  await data.json();
-  //   console.log(parsedData);
-  //   this.setState({
-  //     articles:[]
-  //   })
-  // this.setState(
-  //   {
-  //     articles:parsedData.articles,
-  //     totalResults:parsedData.totalResults,
-  //     loading:false
-  //   }
-  // )
-  //     }
+      this.setState({
+        page:this.state.page+1
+      })
   }
-  // next =async()=>
+  
+  // next =async()=>   //these two methods below are not in use now
   // {
   //   this.setState(
   //     {
@@ -92,14 +75,11 @@ export class News extends Component {
   //   )
   //   this.update();
   // }
-  componentWillUnmount() {
-    // clearInterval(this.interval);
-    this.mount = false;
-    console.log("unmounted")
-  }
+
   fetchMoreData = async() => {
     console.log(this.state.page)
-    this.setState({page:this.state.page+1});
+    // this.setState({page:this.state.page+1}); 
+    // the above set state was not updating my page so I updated my page with setstate firstly in componentDidMount you can check it in that method and secondly in fetchMoreData method setState line number 138
     console.log(this.state.page)
     this.setState({
       loading:true
@@ -108,30 +88,12 @@ export class News extends Component {
     let data= await fetch(url);
     
     let parsedData=  await data.json();  
-    
-    console.log(this.state.articles)
-    // this.setState(function(state, props) {
-    //   return {
-    //     articles:state.articles.concat(parsedData.articles),
-    //     totalResults:parsedData.totalResults, 
-    //     loading:false
-    //   };
-    // });
-    console.log(parsedData);
-    console.log(this.state.loading)
-    // this.setState((previousState) => 
-    // (
-    //   { articles:this.state.articles.concat(parsedData.articles),
-    //     totalResults:parsedData.totalResults, 
-    //     loading:false}
-    //   )
-    //   );
   this.setState(
     {
       articles:this.state.articles.concat(parsedData.articles),
       totalResults:parsedData.totalResults, 
-      loading:false
-      // totalload:this.state
+      loading:false,
+      page:this.state.page+1
     }
     )
     
@@ -161,8 +123,9 @@ export class News extends Component {
               <div className="container">
 
       <div className="row my-3">
-      {this.state.articles.map((element,index)=>{
-        return <div className="col-md-4 my-2 " key={index}>
+      {this.state.articles.map((element,index)=>{ // what is index this parameter is used to get index value of an array which is provied by map method
+         //here occured an error in which my code was calling page 1 in fetchMoreData to know about it goto fetchMoreData function api agian so to sort it  out i used index here but i got the problem and updated it so that's why i am not using index anymore but i am putting it here for future use so if problem occur i will use it again 
+        return <div className="col-md-4 my-2 " key={element.url}>
             <NewsItem title={element.title} description={element.description} myurl={element.urlToImage} url={element.url} author={element.author} date={element.publishedAt} name={element.source.name}/>
         </div>}
         ) 

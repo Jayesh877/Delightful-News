@@ -20,7 +20,7 @@ export default class App extends Component {
   }
   render() {
     
-    let pageSize=5,apiKey="08399ba7b951483ab52e8762d57fadf1"
+    let pageSize=5,apiKey=process.env.REACT_APP_NEWS_API;
     return (
       <div>
       <Router>
