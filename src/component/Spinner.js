@@ -3,7 +3,7 @@ import spinner from './Spinner.gif'
 
 export default function Spinner() {
   return (
-    <div>
+    <div className='text-center'>
         <img src={spinner} alt="Spinner" />
     </div>
   )
