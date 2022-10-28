@@ -16,15 +16,9 @@ const News =(props)=>{
   {
     props.setProgress(0);
     let url=`https://newsapi.org/v2/top-headlines?&country=${props.country}&category=${props.category}&apikey=${props.apikey}&page=${page}&pageSize=${props.pageSize}`;
-    // setState({
-    //   loading:true
-    // })
-    // console.log(props.country,props.category,props.apikey,page,props.pageSize)
     props.setProgress(30);
     let data= await fetch(url);
-    // console.log(data);
     let parsedData=  await data.json();
-    // console.log(parsedData);
     props.setProgress(50);
     setArticles(parsedData.articles);
     setTotalResults(parsedData.totalResults);
@@ -34,8 +28,8 @@ const News =(props)=>{
   }
   useEffect(() => {
     update();
-    setPage(page => page+1)
-  }, [])
+    // eslint-disable-next-line
+  }, []);
   
 
   
@@ -43,7 +37,7 @@ const News =(props)=>{
   // {
   //   setState(
   //     {
-  //       page:state.page +1
+  //       page:page +1
   //     }
   //     )
   //     update();
@@ -52,27 +46,25 @@ const News =(props)=>{
   // {
   //   setState(
   //     {
-  //       page:state.page - 1
+  //       page:page - 1
   //     }
   //   )
   //   update();
   // }
 
   const fetchMoreData = async() => {
-    console.log(page)
-    // setState({page:state.page+1}); 
+    // setState({page:page+1}); 
     // the above set state was not updating my page so I updated my page with setstate firstly in componentDidMount you can check it in that method and secondly in fetchMoreData method setState line number 138
-    console.log(page)
     setLoading(true)
    
-    let url=`https://newsapi.org/v2/top-headlines?&country=${props.country}&category=${props.category}&apikey=${props.apikey}&page=${page}&pageSize=${props.pageSize}`;
+    let url=`https://newsapi.org/v2/top-headlines?&country=${props.country}&category=${props.category}&apikey=${props.apikey}&page=${page+1}&pageSize=${props.pageSize}`;
+    setPage(page+1);
     let data= await fetch(url);
     
     let parsedData=  await data.json();  
     setArticles(articles.concat(parsedData.articles));
     setTotalResults(parsedData.totalResults);
     setLoading(false);
-    setPage(page+1);
 
     
   }
@@ -81,22 +73,17 @@ const News =(props)=>{
     return (
       <>
 
-        <h2 className="text-center">Delightful News -Top HeadLines </h2>
-        {/* <h5 className="text-center"> */}
+        <h2 className="text-center" style={{marginTop: "90px"}}>Delightful News -Top HeadLines </h2>
           {loading && <Spinner/>}
-          {console.log(loading && <Spinner/>)}
-        {/* </h5> */}
         <InfiniteScroll
             dataLength={articles.length} //This is important field to render the next data
             next={fetchMoreData}
             hasMore={articles.length!==totalResults}
             loader={
-              // state.page + 1 >Math.ceil(state.totalResults / props.pageSize) ? "" :<Spinner />
+              // page + 1 >Math.ceil(totalResults / props.pageSize) ? "" :<Spinner />
               
               loading && <Spinner/>
                 }
-              // ${console.log((!state.loading) || <Spinner/>)}
-              // ${console.log("ho")}
               
             >
               <div className="container">
