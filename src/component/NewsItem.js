@@ -1,15 +1,8 @@
-import React, { Component } from 'react'
+import React from 'react'
 
-export class NewsItem extends Component {
-  // constructor()
-  // {
-  //   super();
-  //   console.log("My cunstructor");
-  // }
-  
-  render() {
-    let {title,description,myurl,url,author,date,name}= this.props;
-    return (
+const NewsItem =(props)=> {
+  let {title,description,myurl,url,author,date,name}= props;
+  return (
         <div >
         <div className="card" >
         <a href={url} target="_blank" rel="noreferrer" className="btn btn-primary position-relative">
@@ -27,8 +20,8 @@ export class NewsItem extends Component {
 </div>
 </div>
       
-    )
-  }
+  )
+  
 }
 
 export default NewsItem
