@@ -6,7 +6,13 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 
 const News =(props)=>{
 
+  function capitalizeFirstLetter(str) {
 
+    // converting first letter to uppercase
+    const capitalized = str.charAt(0).toUpperCase() + str.slice(1);
+
+    return capitalized;
+}
   const [articles,setArticles]=useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
@@ -27,6 +33,7 @@ const News =(props)=>{
       props.setProgress(100);
   }
   useEffect(() => {
+    document.title=`${capitalizeFirstLetter(props.category)} - Delightful News `
     update();
     // eslint-disable-next-line
   }, []);
@@ -73,7 +80,7 @@ const News =(props)=>{
     return (
       <>
 
-        <h2 className="text-center" style={{marginTop: "90px"}}>Delightful News -Top HeadLines </h2>
+        <h2 className="text-center" style={{color:props.color==='dark'?'black':'white',marginTop: "90px"}} >Delightful News -Top HeadLines </h2>
           {loading && <Spinner/>}
         <InfiniteScroll
             dataLength={articles.length} //This is important field to render the next data
@@ -92,7 +99,7 @@ const News =(props)=>{
       {articles.map((element,index)=>{ // what is index this parameter is used to get index value of an array which is provied by map method
          //here occured an error in which my code was calling page 1 in fetchMoreData to know about it goto fetchMoreData function api agian so to sort it  out i used index here but i got the problem and updated it so that's why i am not using index anymore but i am putting it here for future use so if problem occur i will use it again 
         return <div className="col-md-4 my-2 " key={element.url}>
-            <NewsItem title={element.title} description={element.description} myurl={element.urlToImage} url={element.url} author={element.author} date={element.publishedAt} name={element.source.name}/>
+            <NewsItem color={props.color} title={element.title} description={element.description} myurl={element.urlToImage} url={element.url} author={element.author} date={element.publishedAt} name={element.source.name}/>
         </div>}
         ) 
       }    
